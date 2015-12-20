@@ -1,0 +1,19 @@
+
+db00 ansible_ssh_host=52.48.45.50
+front ansible_ssh_host=52.31.89.146
+kujango00 ansible_ssh_host=52.48.43.250
+kujango01 ansible_ssh_host=52.48.10.79
+
+[web]
+front
+
+[kudjango]
+kujango00
+kujango01
+
+[dbs]
+db00
+
+[all_groups:children]
+kudjango
+dbs

@@ -29,5 +29,5 @@ frontend www-http
 	default_backend www-backend
 
 backend www-backend
-	server kudjango00 {{ hostvars['kujango00'].ansible_eth1.ipv4.address }}:8000 check
-	server kudjango01 {{ hostvars['kujango01'].ansible_eth1.ipv4.address }}:8000 backup
+	server kudjango00 {{ hostvars['kujango00'].ansible_eth0.ipv4.address }}:8000 check
+	server kudjango01 {{ hostvars['kujango01'].ansible_eth0.ipv4.address }}:8000 backup

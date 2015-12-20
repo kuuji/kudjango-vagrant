@@ -2,4 +2,4 @@ db:
   name: "kudjango"
   user: "kudjango"
   password: "MDP2kudjango*$"
-  host: "{{ hostvars['db00'].ansible_eth1.ipv4.address }}"
+  host: "{{ hostvars['db00'].ansible_eth0.ipv4.address }}"
