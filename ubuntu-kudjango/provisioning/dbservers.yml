@@ -1,0 +1,33 @@
+---
+- hosts: dbs
+  sudo: yes
+  vars:
+    mysql_root_password: fart
+  tasks:
+  - name: Install MySQL
+    apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+    sudo: yes
+    with_items:
+    - python-mysqldb
+    - mysql-server
+  - name: override my.cnf
+    copy: src=files/my.cnf dest=/etc/mysql/my.cnf
+  - name: Start the MySQL service
+    sudo: yes
+    service:
+      name: mysql
+      state: restarted
+      enabled: true
+  - name: create database
+    sudo: yes
+    mysql_db:
+      name: "{{ db.name }}"
+      state: present
+  - name: set user for kudjango
+    sudo: yes
+    mysql_user:
+      name: "{{ db.user }}"
+      host: "%"
+      password: "{{ db.password }}"
+      priv: kudjango.*:ALL
+      state: present

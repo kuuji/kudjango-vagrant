@@ -1,0 +1,20 @@
+---
+- hosts: web
+  sudo: yes
+  tasks:
+  - name: Install Haproxy
+    apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+    sudo: yes
+    with_items:
+    - haproxy
+  - name: Enable haproxy
+    sudo: yes
+    shell: sed -i s/ENABLED=0/ENABLED=1/g /etc/default/haproxy
+  - name: Copy haproxy config
+    template: src=templates/haproxy.j2 dest=/etc/haproxy/haproxy.cfg force=yes
+  - name: Start haproxy service
+    sudo: yes
+    service:
+      name: haproxy
+      state: started
+      enabled: true
