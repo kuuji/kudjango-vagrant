@@ -2,12 +2,24 @@
 - hosts: kudjango
   sudo: yes
   tasks:
-    - name: copy sources to kujango vm
-      copy: src=../../../python dest=/app
+    - name: Install git
+      apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+      sudo: yes
+      with_items:
+      - git
+    - name: Clean app folder
+      sudo: yes
+      shell: rm -rf /app/*
+    - name: Clone app
+      # Example read-write git checkout from github
+      git: repo=https://github.com/kuuji/kudjango-python.git dest=/app force=yes
+
+    # - name: copy sources to kujango vm
+    #   copy: src=../../../python dest=/app
     - name: configure Database
-      template: src=templates/settings.j2 dest=/app/python/kudjango/settings.py force=yes
+      template: src=templates/settings.j2 dest=/app/kudjango/settings.py force=yes
     - name: install requirements
-      action: shell cd /app/python && pip install -r requirements.txt
+      action: shell cd /app && pip install -r requirements.txt
     - name: start the Apply
       sudo: yes
-      action: shell cd /app/python && sh run.sh
+      action: shell cd /app && sh run.sh
